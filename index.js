@@ -1,30 +1,42 @@
 const contacts = require('./db/contacts');
+// const argv = require("yargs").argv;
+const { Command } = require('commander');
+const program = new Command();
+program
+    .option("-a, --action <type>", "choose action")
+  .option("-i, --id <type>", "user id")
+  .option("-n, --name <type>", "user name")
+  .option("-e, --email <type>", "user email")
+  .option("-p, --phone <type>", "user phone");
 
-const invokeAction = async ({ action, contactId, name, email, phone })=>{
+program.parse(process.argv);
+
+const argv = program.opts();
+
+const invokeAction = async ({ action, id, name, email, phone }) => {
     switch (action) {
-        case 'getAll':
+        case "list":
             const contactsList = await contacts.getAll();
             console.log(contactsList)
             break;
-        case 'getContact':
-            const contact = await contacts.getContactById(contactId);
+
+        case "get":
+            const contact = await contacts.getContactById(id);
             console.log(contact)
             break;
-        case 'addContact':
+
+        case "add":
             const newContact = await contacts.addContact({ name, email, phone });
-            console.log(newContact);
+            console.log(newContact)
             break;
-        case 'removeContact':
-            const removeContact = await contacts.removeContact(contactId);
+
+        case "remove":
+            const removeContact = await contacts.removeContact(id);
             console.log(removeContact)
             break;
-        
+
         default:
-      console.warn("\x1B[31m Unknown action type!");
+            console.warn("\x1B[31m Unknown action type!");
     }
 };
-// invokeAction({ action:'addContact',name: 'Mango', email: 'ggg@gmail.com', phone: '03654455' });
-// invokeAction({action:'getAll'});
-// invokeAction({action:'getContact', contactId: 4});
-// invokeAction({action:'removeContact', contactId:4});
-// invokeAction({action:'addContact', name:'Mary', email:"@gmail.com", phone:"(692)802-2949"});
+invokeAction(argv);
