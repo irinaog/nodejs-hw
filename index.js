@@ -1,4 +1,4 @@
-const contacts = require('./db');
+const contacts = require('./db/contacts');
 
 const invokeAction = async ({ action, contactId, name, email, phone })=>{
     switch (action) {
@@ -23,6 +23,7 @@ const invokeAction = async ({ action, contactId, name, email, phone })=>{
       console.warn("\x1B[31m Unknown action type!");
     }
 };
+// invokeAction({ action:'addContact',name: 'Mango', email: 'ggg@gmail.com', phone: '03654455' });
 // invokeAction({action:'getAll'});
 // invokeAction({action:'getContact', contactId: 4});
 // invokeAction({action:'removeContact', contactId:4});
